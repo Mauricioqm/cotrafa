@@ -1,0 +1,84 @@
+<app-header></app-header>
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-lg-6 offset-lg-3">
+      <div class="card">
+        <div class="card-body text-center">
+          <span class="titulo"> Producto: {{ titulo | uppercase }}</span>
+          <form [formGroup]="formEditarProducto" id="productForm" (submit)="updateProduct()">
+            <div class="mb-3">
+            <label for="id" class="form-label">ID</label>
+            <input type="text" class="form-control" id="id" readonly formControlName="id">
+          </div>
+          <div class="error-message" *ngIf="!formEditarProducto.controls.id.valid  && formEditarProducto.controls.id.dirty">
+            <p style="color: red;">Por favor no uses puntos, comas u otro caranter especial</p>
+          </div>
+
+            <div class="mb-3">
+              <label for="producto" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="producto" name="producto" formControlName="producto">
+            </div>
+            <div class="error-message"
+              *ngIf="!formEditarProducto.controls.producto.valid  && formEditarProducto.controls.producto.dirty">
+              <p style="color: red;">No están permitidos los números en este campo</p>
+            </div>
+
+            <div class="mb-3">
+              <label for="codigo" class="form-label">Código</label>
+              <input type="text" class="form-control" id="codigo" name="codigo" formControlName="codigo">
+            </div>
+            <div class="error-message"
+              *ngIf="!formEditarProducto.controls.codigo.valid  && formEditarProducto.controls.codigo.dirty">
+              <p style="color: red;">Por favor no uses puntos, comas u otro caracter especial</p>
+            </div>
+
+            <div class="mb-3">
+              <label for="estado" class="form-label">Estado</label>
+              <select class="form-select" aria-label="estado" name="estado" formControlName="estado">
+                <option value="true">Activo</option>
+                <option value="false">Inactivo</option>
+              </select>
+            </div>
+            <div class="error-message"
+              *ngIf="!formEditarProducto.controls.estado.valid  && formEditarProducto.controls.estado.dirty">
+              <p style="color: red;">Por favor seleccione una de las opciones</p>
+            </div>
+
+            <div class="mb-3">
+              <label for="descripcion" class="form-label">Descripción</label>
+              <input type="text" class="form-control" id="descripcion" name="descripcion" formControlName="descripcion">
+            </div>
+            <div class="error-message"
+              *ngIf="!formEditarProducto.controls.descripcion.valid  && formEditarProducto.controls.descripcion.dirty">
+              <p style="color: red;">Por favor llene este campo</p>
+            </div>
+
+            <div class="mb-3">
+              <label for="precio" class="form-label">Precio</label>
+              <input type="text" class="form-control" id="precio" name="precio" formControlName="precio">
+            </div>
+            <div class="error-message"
+              *ngIf="!formEditarProducto.controls.precio.valid  && formEditarProducto.controls.precio.dirty">
+              <p style="color: red;">No estan permitidas las letras ni caracteres especiales</p>
+            </div>
+
+            <div class="mb-3">
+              <label for="categoria" class="form-label">Categoría </label>
+              <select class="form-select" name="categoria" formControlName="idCategoria">
+                <option *ngFor="let categoria of categorias" [value]="categoria.id">
+                  {{categoria.id}}
+                </option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <button routerLink="/" class="btn btn-secondary btn-lg float-start">VOLVER</button>
+              <button type="submit" [disabled]="formEditarProducto.invalid"
+                class="btn btn-success btn-lg float-end">Editar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

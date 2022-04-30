@@ -1,0 +1,170 @@
+<app-header></app-header>
+<div class="container mt-5">
+  <div class="row">
+    <div class="card">
+      <div class="card-body text-center">
+        <h1 class="titulo">Productos activos</h1>
+        <button class="btn btn-success float-end" data-bs-toggle="modal" data-bs-target="#formCrearProducto"
+          (click)="getCategories()">Agregar</button>
+        <div class="productos" *ngIf="productos.length > 0">
+          <table class="table mt-3">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Producto</th>
+                <th scope="col">Código</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Categoría</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- <tr *ngFor="let producto of activos | paginate: { itemsPerPage: 5, currentPage: pages }"> -->
+              <tr *ngFor="let producto of productos">
+                <td *ngIf="producto.estado">{{ producto.id }}</td>
+                <td *ngIf="producto.estado">{{ producto.producto }}</td>
+                <td *ngIf="producto.estado">{{ producto.codigo }}</td>
+                <td *ngIf="producto.estado">{{ producto.estado }}</td>
+                <td *ngIf="producto.estado">{{ producto.descripcion }}</td>
+                <td *ngIf="producto.estado">{{ producto.precio }}</td>
+                <td *ngIf="producto.estado">{{ producto.idCategoria }}</td>
+                <td *ngIf="producto.estado">
+                  <button (click)="getCategoriesUpdate()" routerLink="/editar-producto/{{producto.id}}" type="button"
+                    class="btn btn-outline-warning">Editar</button>
+                  <button type="button" class="btn btn-outline-danger m-1"
+                    (click)="deleteProduct(producto.id)">Eliminar</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- <pagination-controls previousLabel="Anterior" nextLabel="Siguiente" (pageChange)="pages = $event">
+          </pagination-controls> -->
+        </div>
+        <h5 style="text-align: start; margin-top: 10px;" *ngIf="productos.length == 0">No hay productos
+        </h5>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="card">
+      <div class="card-body text-center">
+        <h1 class="titulo">Productos inactivos</h1>
+        <div class="productos" *ngIf="productos.length > 0">
+          <table class="table mt-3">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Producto</th>
+                <th scope="col">Código</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Categoría</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let producto of productos | paginate: { itemsPerPage: 5, currentPage: pages }">
+                <td *ngIf="!producto.estado">{{ producto.id }}</td>
+                <td *ngIf="!producto.estado">{{ producto.producto }}</td>
+                <td *ngIf="!producto.estado">{{ producto.codigo }}</td>
+                <td *ngIf="!producto.estado">{{ producto.estado }}</td>
+                <td *ngIf="!producto.estado">{{ producto.descripcion }}</td>
+                <td *ngIf="!producto.estado">{{ producto.precio }}</td>
+                <td *ngIf="!producto.estado">{{ producto.idCategoria }}</td>
+                <td *ngIf="!producto.estado">
+                  <button (click)="updateProduct(producto.id)" type="button"
+                    class="btn btn-outline-warning">Editar</button>
+                  <button type="button" class="btn btn-outline-danger m-1"
+                    (click)="deleteProduct(producto.id)">Eliminar</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <pagination-controls previousLabel="Anterior" nextLabel="Siguiente" (pageChange)="pages = $event">
+          </pagination-controls>
+        </div>
+        <h5 style="text-align: start; margin-top: 10px;" *ngIf="productos.length == 0">No hay productos
+        </h5>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="formCrearProducto" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Agregar producto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="formCrearProducto" id="productForm" (submit)="createProduct()">
+            <div class="mb-3">
+              <label for="producto" class="form-label">Producto</label>
+              <input type="text" class="form-control" id="producto" name="producto" formControlName="producto">
+            </div>
+            <div class="error-message"
+              *ngIf="!formCrearProducto.controls.producto.valid  && formCrearProducto.controls.producto.dirty">
+              <p style="color: red;">No están permitidos los números en este campo</p>
+            </div>
+
+            <div class="mb-3">
+              <label for="codigo" class="form-label">Código</label>
+              <input type="text" class="form-control" id="codigo" name="codigo" formControlName="codigo">
+            </div>
+            <div class="error-message"
+              *ngIf="!formCrearProducto.controls.codigo.valid  && formCrearProducto.controls.codigo.dirty">
+              <p style="color: red;">Por favor no uses puntos, comas u otro caracter especial</p>
+            </div>
+
+            <div class="mb-3">
+              <label for="estado" class="form-label">Estado</label>
+              <select class="form-select" aria-label="estado" name="estado" formControlName="estado">
+                <option value="true">Activo</option>
+                <option value="false">Inactivo</option>
+              </select>
+            </div>
+            <div class="error-message"
+              *ngIf="!formCrearProducto.controls.estado.valid  && formCrearProducto.controls.estado.dirty">
+              <p style="color: red;">Por favor seleccione una de las opciones</p>
+            </div>
+
+            <div class="mb-3">
+              <label for="descripcion" class="form-label">Descripción</label>
+              <input type="text" class="form-control" id="descripcion" name="descripcion" formControlName="descripcion">
+            </div>
+            <div class="error-message"
+              *ngIf="!formCrearProducto.controls.descripcion.valid  && formCrearProducto.controls.descripcion.dirty">
+              <p style="color: red;">Por favor llene este campo</p>
+            </div>
+
+            <div class="mb-3">
+              <label for="precio" class="form-label">Precio</label>
+              <input type="text" class="form-control" id="precio" name="precio" formControlName="precio">
+            </div>
+            <div class="error-message"
+              *ngIf="!formCrearProducto.controls.precio.valid  && formCrearProducto.controls.precio.dirty">
+              <p style="color: red;">No estan permitidas las letras ni caracteres especiales</p>
+            </div>
+
+            <div class="mb-3">
+              <label for="categoria" class="form-label">Categoría </label>
+              <select class="form-select" name="categoria" formControlName="categoria">
+                <option *ngFor="let categoria of categorias" [value]="categoria.id">
+                  {{categoria.id}}
+                </option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" #cerrarForm class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" (click)="createProduct()">Crear</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

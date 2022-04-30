@@ -1,0 +1,34 @@
+<div class="container">
+  <div class="row">
+    <div class="position-absolute top-50 start-50 translate-middle col-6">
+      <h2>Registro</h2>
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" name="email" formControlName="email">
+        </div>
+        <div class="error-message" *ngIf="!registerForm.controls.email.valid  && registerForm.controls.email.dirty">
+          <p style="color: red;">Por favor ingrese su email</p>
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" name="password" formControlName="password">
+        </div>
+        <div class="error-message"
+          *ngIf="!registerForm.controls.password.valid  && registerForm.controls.password.dirty">
+          <p style="color: red;">Por favor ingrese su password, este debe tener al menos 6 caracteres</p>
+        </div>
+
+
+        <div class="form-group">
+          <button [disabled]="loading" class="btn btn-primary">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Registrarse
+          </button>
+          <a routerLink="/login" class="btn btn-link">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
